@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% if ticker %}
+    {{ ticker }}
+{% endif %}
+
 {% if api %}
     {% if api == "Error..."%}
         There is a problem with your ticker symbol, please try again.
