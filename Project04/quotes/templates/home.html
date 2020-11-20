@@ -2,4 +2,15 @@
 
 {% block content %}
 
+{% if api %}
+    {% if api == "Error..."%}
+        There is a problem with your ticker symbol, please try again.
+    {% else %}
+        {% for key, value in api.items %}
+            {{ key }}: {{ value }}<br/>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+
 {% endblock %}
