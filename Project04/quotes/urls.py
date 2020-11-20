@@ -10,5 +10,9 @@ urlpatterns = [
 
     path('delete/<stock_id>', views.delete, name="delete"),
 
+    path('delete_stock.html', views.delete_stock, name="delete_stock"),
+
+
+
 
 ]

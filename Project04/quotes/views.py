@@ -23,7 +23,7 @@ def home(request):
         return render(request, 'home.html', {'api': api})
 
     else:
-        return render(request, 'home.html', {'ticker': "enter a ticker symbol above"})
+        return render(request, 'home.html', {'ticker': ""})
 
 
 def about(request):
@@ -59,7 +59,11 @@ def delete(request, stock_id):
     item = Stock.objects.get(pk=stock_id)
     item.delete()
     messages.success(request, ("Stock Has Been Deleted!"))
-    return redirect ('add_stock')
+    return redirect ('delete_stock')
+
+def delete_stock(request):
+    ticker = Stock.objects.all()
+    return render(request, 'delete_stock.html', {'ticker': ticker})
 
 
 
