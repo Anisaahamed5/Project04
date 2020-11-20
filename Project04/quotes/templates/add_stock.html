@@ -27,24 +27,26 @@
     </thead>
     <tbody>
 {% if ticker %}
-        {% for item in ticker %}
-            <tr>
-                <th scope="row">{{ item }}</th>
-                <td>Otto</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td><a href="{% url 'delete' item.id %}">
-                    Delete Stock</a></td>
+           
+                {% for list_item in output %}
+                    <tr>
+                        <th scope="row">{{ list_item.companyName }}</th>
+                        <td>{{ list_item.latestPrice }}</td>
+                        <td>{{ list_item.previousClose }}</td>
+                        <td>{{ list_item.marketCap }}</td>
+                        <td>{{ list_item.ytdChange }}</td>
+                        <td>{{ list_item.week52High }}</td>
+                        <td>{{ list_item.week52Low }}</td>
+                        <td><a href="/">Delete Stock</a></td>
+                    </tr>
+                {% endfor %}
 
-            </tr>
-        {% endfor %}
+       
+            </tbody>
+        </table>   
 {% endif %}
       
-    </tbody>
-  </table>
+    
 
 {% for item in ticker %}
     {{ item }} | <a href="{% url 'delete' item.id %}">
@@ -53,14 +55,5 @@
 
 <br/><br/>
 
-{% for list_item in output %}
-        {{ list_item.companyName }}<br/>
-        {{ list_item.latestPrice }}<br/>
-        {{ list_item.previousClose }}<br/>
-        {{ list_item.marketCap }}<br/>
-        {{ list_item.ytdChange }}<br/>
-        {{ list_item.week52High }}<br/>
-        {{ list_item.week52Low }}<br/><br/>
-{% endfor %}
 
 {% endblock %}
