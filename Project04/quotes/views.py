@@ -26,8 +26,8 @@ def home(request):
         return render(request, 'home.html', {'ticker': ""})
 
 
-def about(request):
-    return render(request, 'about.html', {})
+def trade(request):
+    return render(request, 'trade.html', {})
 
 def add_stock(request):
     import requests
@@ -41,7 +41,6 @@ def add_stock(request):
             messages.success(request, ("Stock Has Been Added Successsfully!"))
             return redirect ('add_stock')
     else:
-
         ticker = Stock.objects.all()
         output =[]
         for ticker_item in ticker:
@@ -49,6 +48,7 @@ def add_stock(request):
 
             try:
                 api = json.loads(api_request.content)
+                api['id'] = ticker_item.id
                 output.append(api)
             except Exception as e:
                 api = "Error..."
@@ -59,7 +59,7 @@ def delete(request, stock_id):
     item = Stock.objects.get(pk=stock_id)
     item.delete()
     messages.success(request, ("Stock Has Been Deleted!"))
-    return redirect ('delete_stock')
+    return redirect ('add_stock')
 
 def delete_stock(request):
     ticker = Stock.objects.all()
