@@ -14,7 +14,5 @@ urlpatterns = [
 
     path('add_trade', views.add_trade, name="add_trade"),
 
-
-
-
+    path('reset',  views.reset, name="reset")
 ]

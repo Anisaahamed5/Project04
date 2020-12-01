@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Stock, Trade, User, Position
 from .forms import StockForm, TradeForm
 from django.contrib import messages
-from .utils import getPrice, updatePositions, validateTrade
+from .utils import getPrice, updatePositions, validateTrade, getChart, getCharts, getUser
 
 def home(request):
     import requests
@@ -12,8 +12,6 @@ def home(request):
         ticker = request.POST['ticker']
 
         #pk_378fb4b735894bae8434380e31b2f915
-        # GET www.mysite.com/newuser => Returns the new user page
-        # POST www.mysite.com/newuser => signs up a new user with the form data
 
         api_request = requests.get("https://cloud.iexapis.com/stable/stock/"+ ticker +"/quote?token=pk_378fb4b735894bae8434380e31b2f915")
 
@@ -36,35 +34,23 @@ def trade(request):
         defaults={'balance': 1000000.00},
     )
 
-    api_request = requests.get("https://cloud.iexapis.com/stable/stock/aapl/chart/today?token=pk_378fb4b735894bae8434380e31b2f915")
-    
-    data = []
-    labels = []
-    
-    try:
-        api = json.loads(api_request.content)
-        
-        for i, point in enumerate(api):
-            data.append('{:20,.2f}'.format(point['average']))
-
-            if i % 15 == 0:
-                labels.append(point['label'])
-            else:
-                labels.append('')
-
-    except Exception as e:
-        print(e)
-        api = "Error..."
-
+    # data, labels = getChart("aapl")
     account_value = user.balance
     positions = Position.objects.all()
-    
 
+    ticker = request.GET.get('ticker', '')
+    if ticker == '':
+        data, labels = getCharts(positions)
+        title = 'Your Account Value'
+    else:
+        title = 'Ticker: ' + ticker
+        data, labels = getChart(ticker)
+    
     for position in positions:
         account_value += position.quantity * getPrice(position.stock_name)
         position.price = getPrice(position.stock_name) * position.quantity
 
-    return render(request, 'trade.html', {'data': data, 'labels': labels, 'balance': user.balance, 'value': account_value, 'positions': positions})
+    return render(request, 'trade.html', {'balance': user.balance, 'value': account_value, 'positions': positions, 'data': data, 'labels': labels, 'title': title})
 
 def add_stock(request):
     import requests
@@ -132,4 +118,12 @@ def add_trade (request):
             messages.error(request, ("There was an issue with your entry, please try again.", form.errors))
             return redirect ('trade')
 
+def reset (request):
+    Trade.objects.all().delete()
+    Position.objects.all().delete()
+    
+    user = getUser()
+    user.balance = 1000000.00
+    user.save()
 
+    return redirect ('trade')
