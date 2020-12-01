@@ -10,7 +10,9 @@ urlpatterns = [
 
     path('delete/<stock_id>', views.delete, name="delete"),
 
-    path('delete_stock.html', views.delete_stock, name="delete_stock"),
+    path('history.html', views.history, name="history"),
+
+    path('add_trade', views.add_trade, name="add_trade"),
 
 
 
