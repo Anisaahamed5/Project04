@@ -22,6 +22,8 @@ HTML, CSS, jQuery, Python, Django,
 ## Ideas for Future Improvement
 
 1. Instead of using an API, I would use an SDK to have a greater variety of content.
-2. I would improve the homepage and add preview GIFS to the index.html.
+2. I would like to add more stock trend information so that people can have a better understanding of stock trends.
+ 
+
 
 
